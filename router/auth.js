@@ -36,7 +36,9 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  let token;
   const { email, password } = req.body;
+  // console.log(email, password);
 
   if (!email || !password) {
     res.status(422).json({ error: "Plz fill all the fields" });
@@ -44,18 +46,23 @@ router.post("/login", async (req, res) => {
   try {
     const userLogin = await User.findOne({ email: email });
     if (!userLogin) {
+      console.log("invalid email");
+
       return res.status(422).json({ error: "Invalid Credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, userLogin.password);
-    const token = await userLogin.generateAuthToken();
-    console.log(typeof token);
-    res.cookie("JWT", token, {
-      expires: new Date(Date.now() + 10000000),
-    });
+    token = await userLogin.generateAuthToken();
+    // console.log(typeof token);
+    // console.log(isMatch);
+    res.cookie("JWT", token);
+    // console.log(res.cookie);
+    // console.log(isMatch, "asas");
     if (isMatch) {
+      // console.log(token);
       res.status(201).json({ message: "Logged in successfully" });
     } else {
+      console.log("invalid password");
       res.status(422).json({ error: "Invallid credentials" });
     }
   } catch (err) {

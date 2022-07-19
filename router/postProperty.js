@@ -7,33 +7,10 @@ const router = express.Router();
 // const multer = require("multer");
 const Property = require("../model/propertySchema");
 
-// define storage for the images
-
-// const storage = multer.diskStorage({
-//   // destination for files
-//   destination: function (request, file, callback) {
-//     callback(null, "../public/uploads/images");
-//   },
-
-//   // add back the extension
-//   filename: function (request, file, callback) {
-//     callback(null, Date.now() + file.originalname);
-//   },
-// });
-
-// // upload parameters for multer
-
-// const upload = multer({
-//   storage: storage,
-//   limits: {
-//     fieldsize: 1024 * 1024 * 3,
-//   },
-// });
-
 router.post("/upload", async (req, res) => {
   x = Date.now() + `.jpg`;
   try {
-    await req.files.image.mv(`public/uploads/images/` + x);
+    await req.files.image.mv(`../client/public/images/` + x);
     res.send(x);
   } catch (err) {
     console.log(err);
@@ -95,6 +72,15 @@ router.post("/listProperty", async (req, res) => {
     await property.save();
 
     res.status(201).json({ message: "Property added successfully" });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/properties", async (req, res) => {
+  try {
+    data = await Property.find({});
+    res.send(data);
   } catch (err) {
     console.log(err);
   }

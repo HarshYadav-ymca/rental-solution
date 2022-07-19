@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const password = encodeURIComponent("Priyanshu@123");
+// const password = encodeURIComponent("Priyanshu@123");
 
-const DB = `mongodb+srv://realestate:${password}@cluster0.9vtac.mongodb.net/realestate?retryWrites=true&w=majority`;
+const DB = process.env.DATABASE;
 
 mongoose
   .connect(DB, {

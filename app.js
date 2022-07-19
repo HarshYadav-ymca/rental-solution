@@ -1,16 +1,20 @@
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const fileUpload = require("express-fileupload");
-
-app.use(cors());
+var cookieParser = require("cookie-parser");
+dotenv.config({ path: "./config.env" });
+// app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 require("./db/conn");
+
+app.use(cookieParser());
 
 // const User = require("./model/userSchema");
 app.use(express.json());
 app.use(fileUpload());
-
 app.use(require("./router/auth"));
 app.use(require("./router/postProperty"));
 
@@ -26,6 +30,8 @@ app.get("/", (req, res) => {
 
 app.get("/about", (req, res) => {
   console.log(req.url);
+  res.cookie("abc", "def");
+  res.status(200);
   res.send("HEllo from About");
 });
 
