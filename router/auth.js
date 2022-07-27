@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const authenticate = require("../middlewares/authenticate");
 require("../db/conn");
 
 const User = require("../model/userSchema");
@@ -68,6 +68,17 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+router.get("/about", authenticate, (req, res) => {
+  console.log(req.rootUser.name);
+  res.send(req.rootUser);
+});
+
+router.get("/logout", (req, res) => {
+  console.log("Logging out");
+  res.clearCookie("JWT", { path: "/" });
+  res.status(200).send("User logout");
 });
 
 module.exports = router;

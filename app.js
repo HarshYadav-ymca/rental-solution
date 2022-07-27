@@ -28,13 +28,6 @@ app.get("/", (req, res) => {
   res.send("HEllo World");
 });
 
-app.get("/about", (req, res) => {
-  console.log(req.url);
-  res.cookie("abc", "def");
-  res.status(200);
-  res.send("HEllo from About");
-});
-
 app.get("/services", (req, res) => {
   console.log(req.url);
   res.send("HEllo from services");
